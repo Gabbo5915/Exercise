@@ -15,11 +15,11 @@ Vue.config.productionTip = false;
 const globalChatSettings = DefaultChats.friends[0];
 
 // ChatBot REST endpoint powered by PubNub Functions and Amazon Lex
-const chatBotURL = '__Your_PubNub_Function_Endpoint_For_Lex__';
+const chatBotURL = 'https://pubsub.pubnub.com/v1/blocks/sub-key/sub-c-9a75b2ce-36c5-11e9-9010-ca52b265d058/chat-bot';
 
 // Init ChatEngine with PubNub
-const publishKey = '__Your_PubNub_Publish_Key__';
-const subscribeKey = '__Your_PubNub_Subscribe_Key__';
+const publishKey = "pub-c-2a215bc1-60a7-44a0-9fa0-c6d4dcc350cf";
+const subscribeKey = "sub-c-9a75b2ce-36c5-11e9-9010-ca52b265d058";
 
 if (!publishKey || !subscribeKey) {
   console.error('ChatEngine: PubNub Keys are missing.');
@@ -29,8 +29,8 @@ const chatEngine = ChatEngineCore.create({
   publishKey,
   subscribeKey,
 }, {
-  globalChannel: globalChatSettings.chatKey,
-});
+    globalChannel: globalChatSettings.chatKey,
+  });
 
 const myUuid = util.fourCharID();
 const me = {
@@ -39,7 +39,7 @@ const me = {
 };
 
 // ChatEngine injected into every component instance with the plugin
-Vue.use(VueChatEngine, {chatEngine, store});
+Vue.use(VueChatEngine, { chatEngine, store });
 
 /**
  * Execute this function when the Vue instance is created
@@ -50,14 +50,14 @@ function created() {
 
   ChatEngine.connect(me.uuid, me);
 
-  document.addEventListener('beforeunload', function() {
+  document.addEventListener('beforeunload', function () {
     ChatEngine.disconnect();
   });
 
-  ChatEngine.on('$.ready', function(data) {
+  ChatEngine.on('$.ready', function (data) {
     // store my new user as `me`
     let me = data.me;
-    store.commit('setMe', {me});
+    store.commit('setMe', { me });
 
     // Auto add a 1:1 chat to UI when invited
     // more invite code in (components/FriendList.vue)
@@ -102,7 +102,7 @@ function created() {
     });
 
     // Create a new chat for each user in the friends list
-    DefaultChats.friends.forEach(function(friend) {
+    DefaultChats.friends.forEach(function (friend) {
       const uuids = [friend.uuid, store.state.me.uuid].sort();
       const chatKey = uuids.join('-');
 
@@ -148,7 +148,7 @@ function created() {
 new Vue({
   el: '#app',
   store,
-  components: {App},
+  components: { App },
   template: '<App/>',
   created,
 });

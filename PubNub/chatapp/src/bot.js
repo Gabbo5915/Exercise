@@ -9,8 +9,8 @@ export default (ChatEngineHumanClient, bot, chatBotURL) => {
     publishKey: ChatEngineHumanClient.pnConfig.publishKey,
     subscribeKey: ChatEngineHumanClient.pnConfig.subscribeKey,
   }, {
-    globalChannel: ChatEngineHumanClient.global.channel,
-  });
+      globalChannel: ChatEngineHumanClient.global.channel,
+    });
 
   // Connect the ChatBot's Client
   ChatEngineBotClient.connect(bot.uuid, {
@@ -18,13 +18,13 @@ export default (ChatEngineHumanClient, bot, chatBotURL) => {
     uuid: bot.uuid,
   });
 
-  ChatEngineBotClient.on('$.ready', function(data) {
+  ChatEngineBotClient.on('$.ready', function (data) {
     // Make a ChatEngine Chat object of the ChatBot
     let botChat = new ChatEngineBotClient.Chat(bot.chatKey, true);
 
     // Add the Typing Indicator ChatEngine plugin to this 1:1 chat
     botChat.plugin(typingIndicator({
-        timeout: 2000,
+      timeout: 2000,
     }));
 
     botChat.on('$.connected', () => {
@@ -39,8 +39,8 @@ export default (ChatEngineHumanClient, bot, chatBotURL) => {
             body: {
               data: {
                 lex: {
-                  botAlias: 'StephenChatEngineExample',
-                  botName: 'StephenChatEngineExample',
+                  botAlias: 'PubNub',
+                  botName: 'ChatBot',
                   contentType: 'text/plain; charset=utf-8',
                   inputText: payload.data.text,
                   userId: 'ChatEngineVueDemo',

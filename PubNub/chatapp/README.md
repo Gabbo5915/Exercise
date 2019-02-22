@@ -1,6 +1,6 @@
 # chatapp
 
-> A Vue.js with PubNub
+> A Vue.js project
 
 ## Build Setup
 
