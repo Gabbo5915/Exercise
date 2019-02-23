@@ -59,6 +59,7 @@ function created() {
     let me = data.me;
     store.commit('setMe', { me });
 
+
     // Auto add a 1:1 chat to UI when invited
     // more invite code in (components/FriendList.vue)
     me.direct.on('$.invite', (event) => {
@@ -130,6 +131,7 @@ function created() {
         friend,
         true,
       );
+
 
       // when a user comes online
       myChat.on('$.online.*', (data) => {

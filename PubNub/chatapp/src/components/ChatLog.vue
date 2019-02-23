@@ -1,8 +1,6 @@
 <template>
-  <div
-    class="chat-log"
-    ref="chatLogContainer"
-  >
+  <div class="chat-log" ref="chatLogContainer">
+    <div id="typing"></div>
     <message-bubble
       v-for="message in messages"
       :key="message.key"
@@ -10,10 +8,7 @@
       :text="message.text"
       :who="message.who"
     ></message-bubble>
-    <div
-      class="typing-indicator"
-      :class="showTypingIndicator ? 'typing-on' : 'typing-off'"
-    >
+    <div class="typing-indicator" :class="showTypingIndicator ? 'typing-on' : 'typing-off'">
       <div class="lds-ripple">
         <div></div>
         <div></div>
@@ -23,8 +18,8 @@
 </template>
 
 <script>
-import MessageBubble from '@/components/MessageBubble';
-import {EventBus} from '../event-bus.js';
+import MessageBubble from "@/components/MessageBubble";
+import { EventBus } from "../event-bus.js";
 
 /**
  * Auto scrolls the chat log to the bottom when a new message is received or if
@@ -35,24 +30,24 @@ function scrollBottom() {
 }
 
 export default {
-  name: 'chat-log',
-  components: {MessageBubble},
+  name: "chat-log",
+  components: { MessageBubble },
   data() {
     return {
-      showTypingIndicator: false,
+      showTypingIndicator: false
     };
   },
   computed: {
     messages() {
       this.$nextTick(scrollBottom);
       return this.$store.state.chatMessages[this.$store.state.currentChat];
-    },
+    }
   },
   created() {
     const thisComponent = this;
 
     // Add a typing indicator visual to the UI
-    EventBus.$on('typing-start', (chatKey) => {
+    EventBus.$on("typing-start", chatKey => {
       if (this.$store.state.currentChat === chatKey) {
         thisComponent.showTypingIndicator = true;
         this.$nextTick(scrollBottom);
@@ -60,7 +55,7 @@ export default {
     });
 
     // Remove the typing indicator visual from the UI
-    EventBus.$on('typing-stop', (chatKey) => {
+    EventBus.$on("typing-stop", chatKey => {
       if (this.$store.state.currentChat === chatKey) {
         thisComponent.showTypingIndicator = false;
       }
@@ -68,7 +63,7 @@ export default {
 
     // Scroll the chat log to the bottom
     this.$nextTick(scrollBottom);
-  },
+  }
 };
 </script>
 
