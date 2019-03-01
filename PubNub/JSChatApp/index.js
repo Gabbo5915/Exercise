@@ -29,7 +29,28 @@ const init = () => {
 
     // when ChatEngine is booted, it returns your new User as `data.me`
     ChatEngine.on('$.ready', function (data) {
-
+        document.addEventListener("keydown", keypress);
+        document.addEventListener("keyup", keynotpress);
+        myChat.plugin(ChatEngineCore.plugin['chat-engine-emoji']());
+        let config = { timeout: 2000 }
+        myChat.plugin(ChatEngineCore.plugin['chat-engine-typing-indicator'](config));
+        myChat.on('$typingIndicator.startTyping', (payload) => {
+            $('#typing').html(payload.sender.state.first + " is typing...");
+        });
+        myChat.on('$typingIndicator.stopTyping', (payload) => {
+            $('#typing').empty();
+        });
+        let keypress = (e) => {
+            if (e.keyCode === 13) {
+                // bind our "send" button and return key to send message
+                $('#sendMessage').on('submit', sendMessage)
+            } else {
+                myChat.typingIndicator.startTyping();
+            }
+        };
+        let keynotpress = (e) => {
+            myChat.typingIndicator.stopTyping();
+        };
         // store my new user as `me`
         me = data.me;
 
